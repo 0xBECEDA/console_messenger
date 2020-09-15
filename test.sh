@@ -1,27 +1,46 @@
-#!/bin/sh
+#!/bin/bash
+
+#!/bin/bash
 
 SERVER=server
 CLIENT=client
 if test -x "$SERVER" && test -x "$CLIENT"; then
     echo "Запускаю сервер $SERVER и клиенты $CLIENT\n"
 
-    ./"$SERVER" &
-    export PID1=$!
+    screen -S "server" -d -m
     sleep 3
-    ./"$CLIENT"    &
-    export PID2=$!
+    screen -S server -p 0 -X stuff 'script server.txt'$(echo -ne '\015')
     sleep 3
-    ./"$CLIENT"    &
-    export PID3=$!
+    # screen -S server -p 0 -X stuff 'echo Hello!'$(echo -ne '\015')
     sleep 3
-    echo "\n файловые дескрипкторы $PID1 $PID2 $PID3\n"
+    screen -S server -p 0 -X stuff './server'$(echo -ne '\015')
 
-    fg %1
-    bg %1
+    sleep 3
 
-    kill "$PID1"
-    kill "$PID2"
-    kill "$PID3"
+    # screen -S "client_1" -d -m
+    # screen -S client_1 -p 0 -X stuff 'script client_1.txt'$(echo -ne '\015')
+    # screen -S client_1 -p 0 -X stuff './client'$(echo -ne '\015')
+
+    # sleep 2
+
+    # screen -S "client_2" -d -m
+    # sleep 0.5
+    # screen -S client_2 -p 0 -X stuff 'script client_2.txt'$(echo -ne '\015')
+    # screen -S client_2 -p 0 -X stuff './client'$(echo -ne '\015')
+
+    # sleep 2
+
+    # screen -S client_1 -p 0 -X stuff 'echo Hello!'$(echo -ne '\015')
+
+    # screen -S client_1 -p 0 -X stuff 'exit'$(echo -ne '\015')
+    # screen -S client_2 -p 0 -X stuff 'exit'$(echo -ne '\015')
+    screen -S server -p 0 -X stuff 'exit'$(echo -ne '\015')
+    sleep 1
+    # echo "here\n"
+    # screen -ls
+    screen -X -S server kill
+    # screen -X -S client_1 kill
+    # screen -X -S client_2 kill
 
 else
     echo "$SERVER или $CLIENT не существует\n"
