@@ -73,6 +73,8 @@ void* thread_func( void* param ) {
 
 void main() {
 
+    printf("SERVER: begin work\n");
+    fflush(stdout);
     struct sockaddr_in serv_in, clnt_in;
     int conn_idx = 0;
     void* p = (void*)clients;

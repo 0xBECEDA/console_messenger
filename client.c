@@ -70,6 +70,9 @@ void  main() {
         if (len > 0) {
 
             /* send возвращает кол-во отправленных байтов */
+            printf("I:   %s\n", buf);
+            fflush(stdout);
+
             int amount = send(sock, buf, sizeof(buf), 0);
             clear_buf((char*)&buf, 1024);
         }
